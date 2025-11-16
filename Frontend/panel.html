@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Administrativo - El Sabor</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="panel-admin">
+    <div class="container">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="header-content">
+                <div class="admin-title">
+                    <div class="admin-title-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h1>Gestor de Reservas</h1>
+                        <p>Gestión de Reservas - El Sabor</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="location.href='index.html'">
+                        <i class="fas fa-home"></i> Ir al Sitio
+                    </button>
+                    <button class="btn btn-primary" onclick="exportarReporte()">
+                        <i class="fas fa-download"></i> Exportar Reporte
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalReservas">0</div>
+                <div class="stat-label">Total Reservas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="reservasConfirmadas">0</div>
+                <div class="stat-label">Confirmadas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="reservasCanceladas">0</div>
+                <div class="stat-label">Canceladas</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                </div>
+                <div class="stat-value" id="totalPersonas">0</div>
+                <div class="stat-label">Total Personas</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label><i class="fas fa-search"></i> Buscar</label>
+                    <input type="text" id="searchInput" placeholder="Código o nombre...">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-calendar"></i> Fecha</label>
+                    <input type="date" id="filterFecha">
+                </div>
+                <div class="filter-group">
+                    <label><i class="fas fa-filter"></i> Estado</label>
+                    <select id="filterEstado">
+                        <option value="">Todos</option>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button class="btn btn-primary" onclick="aplicarFiltros()" style="width: 100%;">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-title">
+                    <i class="fas fa-table"></i>
+                    Lista de Reservas
+                </div>
+                <button class="btn btn-danger" onclick="limpiarTodasReservas()">
+                    <i class="fas fa-trash"></i> Limpiar Todo
+                </button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="reservasTable">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Personas</th>
+                            <th>Teléfono</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservasBody">
+                        <!-- Reservas aparecerán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar Reserva</h3>
+                <button class="close-btn" onclick="cerrarModal('editModal')">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editCodigo">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" id="editNombre" required>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="editTelefono" required>
+                </div>
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" id="editFecha" required>
+                </div>
+                <div class="form-group">
+                    <label>Hora</label>
+                    <input type="time" id="editHora" required>
+                </div>
+                <div class="form-group">
+                    <label>Personas</label>
+                    <input type="number" id="editPersonas" min="1" max="20" required>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="editEstado" required>
+                        <option value="confirmada">Confirmada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Comentarios</label>
+                    <textarea id="editComentarios" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="panel-script.js"></script>
+</body>
+</html>

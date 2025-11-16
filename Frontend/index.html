@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurante El Sabor</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+<!-- Menu de arriba -->
+<header>
+    <div class="logo">
+        <img src="logo.png" alt="Restaurante El Sabor">
+        <h1>Restaurante El Sabor</h1>
+    </div>
+    <button class="menu-toggle" id="btnMenu" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav id="menuNavegacion" class="menu-navegacion">
+        <a href="#inicio">Inicio</a>
+        <a href="#menu">Menú</a>
+        <a href="#nosotros">Nosotros</a>
+    </nav>
+</header>
+
+<section id="inicio" class="seccion0">
+    <img src="Fondo2.png" class="img-fondo" alt="Fondo de Inicio">
+    <main id="inicio">
+        <h2>Bienvenido</h2>
+        <p>Disfruta de una experiencia culinaria única</p>
+        <button class="btn" onclick="abrir('modal1')">Reservar ahora</button>
+        <button class="btn" onclick="abrir('modal2')">Consulta tu mesa</button>
+
+    <div id="mensaje" class="mensaje"></div>
+</main>
+</section>
+<!-- Seccion Menu -->
+<section id="menu" class="seccion">
+    <div class="contenido">
+        <h2>Nuestro Menú</h2>
+        
+        <div class="menu-categoria">
+            <h3>🍽️ Platos Principales</h3>
+            <div class="plato">
+                <h4>Lomo a la Parrilla:</h4>
+                <p class="descripcion">Jugoso lomo con papas y ensalada fresca</p>
+                <span class="precio">$35.000</span>
+            </div>
+            <div class="plato">
+                <h4>Salmón al Horno:</h4>
+                <p class="descripcion">Con vegetales salteados y arroz</p>
+                <span class="precio">$32.000</span>
+            </div>
+            <div class="plato">
+                <h4>Pollo en Salsa:</h4>
+                <p class="descripcion">Pollo tierno con salsa especial</p>
+                <span class="precio">$28.000</span>
+            </div>
+        </div>
+
+        <div class="menu-categoria">
+            <h3>🥗 Entradas</h3>
+            <div class="plato">
+                <h4>Ensalada César:</h4>
+                <p class="descripcion">Lechuga, pollo, crutones y aderezo</p>
+                <span class="precio">$18.000</span>
+            </div>
+            <div class="plato">
+                <h4>Sopa del Día:</h4>
+                <p class="descripcion">Pregunta a tu mesero por la especialidad</p>
+                <span class="precio">$15.000</span>
+            </div>
+        </div>
+
+        <div class="menu-categoria">
+            <h3>🍰 Postres</h3>
+            <div class="plato">
+                <h4>Tiramisú:</h4>
+                <p class="descripcion">El clásico postre italiano</p>
+                <span class="precio">$12.000</span>
+            </div>
+            <div class="plato">
+                <h4>Helado Artesanal:</h4>
+                <p class="descripcion">3 bolas de diferentes sabores</p>
+                <span class="precio">$10.000</span>
+            </div>
+        </div>
+
+        <div class="menu-categoria">
+            <h3>🍹 Bebidas</h3>
+            <div class="plato">
+                <h4>Limonada Natural:</h4>
+                <p class="descripcion">Refrescante y natural</p>
+                <span class="precio">$8.000</span>
+            </div>
+            <div class="plato">
+                <h4>Jugos Naturales:</h4>
+                <p class="descripcion">Naranja, mango, mora</p>
+                <span class="precio">$9.000</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Seccion Nosotros -->
+<section id="nosotros" class="seccion2">
+    <div class="contenido">
+        <h2>Acerca de Nosotros</h2>
+        
+        <div class="nosotros-content">
+            <div class="historia">
+                <h3>📖 Nuestra Historia</h3>
+                <p>Restaurante El Sabor nació en 2010 con la visión de ofrecer una experiencia culinaria única. Comenzamos como un pequeño restaurante familiar y hemos crecido para convertirnos en uno de los lugares favoritos de la ciudad.</p>
+                <p>Nuestro compromiso con la calidad y el servicio nos ha permitido crear momentos especiales para miles de familias a lo largo de estos años.</p>
+            </div>
+
+            <div class="mision">
+                <h3>🎯 Nuestra Misión</h3>
+                <p>Brindar una experiencia gastronómica excepcional, utilizando ingredientes frescos y de calidad, mientras creamos un ambiente acogedor donde nuestros clientes se sientan como en casa.</p>
+            </div>
+
+            <div class="equipo">
+                <h3>👨‍🍳 Nuestro Equipo</h3>
+                <div class="chef">
+                    <h4>Chef Flor Islen Ramirez</h4>
+                    <p>Con más de 15 años de experiencia en cocina internacional</p>
+                </div>
+                <div class="chef">
+                    <h4>Chef Paula Andrea Varon</h4>
+                    <p>Especialista en repostería y postres artesanales</p>
+                </div>
+            </div>
+
+            <div class="contacto">
+                <h3>📍 Encuentranos</h3>
+                <p><strong>Dirección:</strong> Carrera 13 #13109, Funza</p>
+                <p><strong>Teléfono:</strong> (601) 123-4567</p>
+                <p><strong>Horarios:</strong> Lunes a Domingo, 11:00 AM - 10:00 PM</p>
+                <p><strong>Email:</strong> info@restauranteelsabor.com</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+ <!-- pie de pagina -->
+<section id="pie-pagina" class="seccion3">
+ <footer class="pie-pagina">
+        <div class="container">
+                <div class="contenido-pie">
+                    <h3>El Sabor</h3>
+                <p>Disfruta de la mejor comida en un ambiente acogedor.</p>
+                <div class="enlaces-redes">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#"><i class="fab fa-tiktok"></i></a>
+                </div>
+                <p>&copy; 2025 El Sabor. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+</section>
+<!-- modal 1 - reservar -->
+<div class="modal" id="modal1">
+  <div class="caja">
+    <span class="cerrar" onclick="cerrar('modal1')">&times;</span>
+    <h3>Reservar Mesa</h3>
+    <form id="reservaForm">
+        <label>Nombre:</label>
+        <input type="text" id="nombre" required>
+        
+        <label>Teléfono:</label>
+        <input type="tel" id="telefono" required>
+        
+        <label>Correo:</label>
+        <input type="email" id="correo" required>
+        
+        <label>Fecha:</label>
+        <input type="date" id="fecha" required>
+        
+        <label>Hora:</label>
+        <select id="hora" required>
+            <option value="">Seleccionar hora</option>
+            <option value="12:00">12:00 PM</option>
+            <option value="12:30">12:30 PM</option>
+            <option value="13:00">1:00 PM</option>
+            <option value="13:30">1:30 PM</option>
+            <option value="14:00">2:00 PM</option>
+            <option value="18:00">6:00 PM</option>
+            <option value="18:30">6:30 PM</option>
+            <option value="19:00">7:00 PM</option>
+            <option value="19:30">7:30 PM</option>
+            <option value="20:00">8:00 PM</option>
+            <option value="20:30">8:30 PM</option>
+            <option value="21:00">9:00 PM</option>
+        </select>
+        
+        <label>Personas:</label>
+        <select id="personas" required>
+            <option value="">Seleccionar</option>
+            <option value="1">1 persona</option>
+            <option value="2">2 personas</option>
+            <option value="3">3 personas</option>
+            <option value="4">4 personas</option>
+            <option value="5">5 personas</option>
+            <option value="6">6 personas</option>
+            <option value="7">7 personas</option>
+            <option value="8">8 personas</option>
+        </select>
+        
+        <label>Comentarios:</label>
+        <input type="text" id="comentarios" placeholder="Opcional">
+        
+        <button type="submit" class="btn">Confirmar</button>
+    </form>
+  </div>
+</div>
+
+<!-- modal 2 - consultar -->
+<div class="modal" id="modal2">
+  <div class="caja">
+    <span class="cerrar" onclick="cerrar('modal2')">&times;</span>
+    <h3>Consultar Reserva</h3>
+    <label>Código:</label>
+    <input type="text" id="codigoConsulta" placeholder="RES12345">
+    
+    <label>Correo:</label>
+    <input type="email" id="correoConsulta">
+    
+    <button class="btn" onclick="buscarReserva()">Buscar</button>
+    
+    <div id="resultadoConsulta"></div>
+  </div>
+</div>
+
+<!-- modal 3 - confirmacion -->
+<div class="modal" id="modal3">
+  <div class="caja">
+    <span class="cerrar" onclick="cerrar('modal3')">&times;</span>
+    <h3>¡Reserva Confirmada!</h3>
+    <p>Tu código es:</p>
+    <div id="codigoGenerado" class="codigo"></div>
+    <div id="detallesReserva"></div>
+    <button class="btn" onclick="cerrar('modal3')">Volver</button>
+    <button class="btn" onclick="abrir('modal2'); cerrar('modal3')">Consulta tu mesa</button>
+  </div>
+</div>
+
+<!-- Botón flotante -->
+<button class="btn-flotante" onclick="abrir('modalQuienSoy')">
+    <i class="fa-solid fa-user"></i> ¿Quién Soy?
+</button>
+
+<!-- Modal 4 Presentacion -->
+<div class="modal" id="modalQuienSoy">
+  <div class="caja caja-quien">
+    <img src="svr.png" class="img-quien">
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
