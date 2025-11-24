@@ -1,17 +1,20 @@
 const { useState } = React;
 
+// Componente de login
 function Login() {
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Manejar el envío del formularo
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setLoading(true);
 
         try {
+            // Enviar datos al servidor
             const response = await fetch('http://localhost:3000/api/auth/login', {
                 method: 'POST',
                 headers: {
@@ -26,8 +29,10 @@ function Login() {
                 throw new Error(data.error || 'Error al iniciar sesión');
             }
 
+            // Guardar datos de sesión
             localStorage.setItem('sessionId', data.sessionId);
             localStorage.setItem('usuario', JSON.stringify(data.usuario));
+            // Ir al panel
             window.location.href = '../panel.html';
 
         } catch (err) {
@@ -68,5 +73,6 @@ function Login() {
     );
 }
 
+// Mostrar el componente en la página
 ReactDOM.render(<Login />, document.getElementById('root'));
 

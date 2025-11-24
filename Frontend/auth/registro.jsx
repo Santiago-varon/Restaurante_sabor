@@ -1,5 +1,6 @@
 const { useState } = React;
 
+// Componente de registro
 function Registro() {
     const [nombre, setNombre] = useState('');
     const [correo, setCorreo] = useState('');
@@ -9,16 +10,19 @@ function Registro() {
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
 
+        // Validar que las contraseñas coincidan
         if (password !== confirmPassword) {
             setError('Las contraseñas no coinciden');
             return;
         }
 
+        // Validar longitud de contraseña
         if (password.length < 6) {
             setError('La contraseña debe tener al menos 6 caracteres');
             return;
@@ -27,6 +31,7 @@ function Registro() {
         setLoading(true);
 
         try {
+            // Enviar datos al servido
             const response = await fetch('http://localhost:3000/api/auth/registro', {
                 method: 'POST',
                 headers: {
@@ -42,6 +47,7 @@ function Registro() {
             }
 
             setSuccess('Registro exitoso. Redirigiendo...');
+            // Redirigir al login después de 2 segundos
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 2000);
@@ -103,5 +109,6 @@ function Registro() {
     );
 }
 
+// Mostrar el componente en la página
 ReactDOM.render(<Registro />, document.getElementById('root'));
 
