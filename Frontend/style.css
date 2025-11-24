@@ -388,11 +388,13 @@ main p {
     align-items: center;
     gap: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: 0.3s;
+    transition: opacity 0.3s;
     z-index: 1100;
+    opacity: 0;
 }
 
 .btn-flotante:hover {
+    opacity: 1;
     background: var(--color-amarillo);
     transform: scale(1.05);
 }

@@ -31,7 +31,7 @@ mysql -u root -p < restaurante_sabor.sql
 
 ### 3. Configurar variables de entorno
 
-Dentro del directorio Backend, editar el archivo `.env`:
+Dentro del directorio Backend, crear el archivo `.env`:
 ```env
 PORT=3000
 DB_HOST=localhost
@@ -57,28 +57,40 @@ La API estará disponible en: http://localhost:3000
 
 ### Cliente (Frontend)
 
-1. Abrir: `Frontend/index.html`
+1. Abrir: `http://localhost:3000/index.html` (después de iniciar el servidor)
 2. Usar "Reservar ahora" para crear una reserva
 3. Consultar reservas con "Consulta tu mesa" mediante código y correo
 
-### Panel Administrativo
+### Panel Administrativo (Requiere autenticación)
 
-1. Abrir: `Frontend/panel.html`
-2. Visualizar todas las reservas y estadísticas
-3. Editar, cancelar o eliminar reservas
+1. **Registrar empleado:** Abrir `http://localhost:3000/auth/registro.html` y crear una cuenta
+2. **Iniciar sesión:** Abrir `http://localhost:3000/auth/login.html` e ingresar con correo y contraseña
+3. **Acceder al panel:** Después del login, serás redirigido automáticamente al panel administrativo
+4. Visualizar todas las reservas y estadísticas
+5. Editar, cancelar o eliminar reservas
+6. Exportar reportes en CSV
 
 ## Endpoints de la API
+
+### Autenticación
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| POST | `/api/auth/registro` | Registrar nuevo empleado |
+| POST | `/api/auth/login` | Iniciar sesión (retorna sessionId) |
+| GET | `/api/auth/verificar` | Verificar sesión (requiere autenticación) |
+| POST | `/api/auth/logout` | Cerrar sesión |
 
 ### Reservas
 
 | Método | Endpoint | Descripción |
 |--------|----------|-------------|
-| GET | `/api/reservas` | Obtener todas las reservas |
+| GET | `/api/reservas` | Obtener todas las reservas (requiere autenticación) |
 | GET | `/api/reservas/:codigo?correo=email` | Buscar reserva por código y correo |
 | POST | `/api/reservas` | Crear nueva reserva |
 | PUT | `/api/reservas/:codigo` | Cambiar estado de reserva |
-| PUT | `/api/reservas/:codigo/admin` | Actualizar completamente una reserva |
-| DELETE | `/api/reservas/:codigo` | Eliminar reserva |
+| PUT | `/api/reservas/:codigo/admin` | Actualizar completamente una reserva (requiere autenticación) |
+| DELETE | `/api/reservas/:codigo` | Eliminar reserva (requiere autenticación) |
 
 ### Salud del servidor
 
@@ -88,8 +100,8 @@ La API estará disponible en: http://localhost:3000
 
 ## Tecnologías Utilizadas
 
-- **Backend:** Node.js, Express, MySQL
-- **Frontend:** HTML5, CSS, JavaScript
+- **Backend:** Node.js, Express, MySQL, bcrypt
+- **Frontend:** HTML5, CSS, JavaScript, React (CDN)
 - **Base de datos:** MySQL
 
 ## Autor
@@ -100,5 +112,7 @@ Jhonatan Santiago Varón Ramírez – SENA 2025
 
 - El backend debe estar activo para que el frontend funcione
 - Verificar que MySQL esté instalado y ejecutándose
-- Configurar correctamente el archivo `.env`
+- Configurar correctamente el archivo `.env` con todas las variables
 - La base de datos se crea automáticamente al importar el archivo SQL
+- **Importante:** El panel administrativo ahora requiere autenticación. Debes registrar un empleado primero
+- Las contraseñas se almacenan de forma segura usando bcrypt

@@ -4,12 +4,82 @@ const API_URL = 'http://localhost:3000/api';
 // Variable global para almacenar reservas
 let reservasAdmin = [];
 
+// Obtener sessionId
+function getSessionId() {
+    return localStorage.getItem('sessionId');
+}
+
+// Headers con autenticación
+function getAuthHeaders() {
+    return {
+        'Content-Type': 'application/json',
+        'session-id': getSessionId()
+    };
+}
+
+// Verificar si está logueado
+async function verificarAutenticacion() {
+    const sessionId = getSessionId();
+    
+    if (!sessionId) {
+        window.location.href = 'auth/login.html';
+        return false;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/auth/verificar`, {
+            headers: getAuthHeaders()
+        });
+        
+        if (!response.ok) {
+            throw new Error('Sesión inválida');
+        }
+        
+        const data = await response.json();
+        
+        // Mostrar nombre del usuario
+        const usuarioInfo = document.getElementById('usuarioInfo');
+        if (usuarioInfo) {
+            usuarioInfo.innerHTML = `<i class="fas fa-user"></i> ${data.usuario.nombre}`;
+        }
+        
+        return true;
+    } catch (error) {
+        localStorage.removeItem('sessionId');
+        localStorage.removeItem('usuario');
+        window.location.href = 'auth/login.html';
+        return false;
+    }
+}
+
+// Cerrar sesión
+function cerrarSesion() {
+    if (confirm('¿Cerrar sesión?')) {
+        const sessionId = getSessionId();
+        if (sessionId) {
+            fetch(`${API_URL}/auth/logout`, {
+                method: 'POST',
+                headers: getAuthHeaders()
+            });
+        }
+        localStorage.removeItem('sessionId');
+        localStorage.removeItem('usuario');
+        window.location.href = 'auth/login.html';
+    }
+}
+
 // Función para cargar reservas desde la API
 async function cargarReservasAdmin() {
     try {
-        const response = await fetch(`${API_URL}/reservas`);
+        const response = await fetch(`${API_URL}/reservas`, {
+            headers: getAuthHeaders()
+        });
         
         if (!response.ok) {
+            if (response.status === 401) {
+                cerrarSesion();
+                return;
+            }
             throw new Error('Error al cargar reservas');
         }
         
@@ -18,7 +88,7 @@ async function cargarReservasAdmin() {
         mostrarReservas(reservasAdmin);
         
     } catch (error) {
-        console.error('❌ Error al cargar reservas:', error);
+        console.error('Error al cargar reservas:', error);
         mostrarMensajeAdmin('Error al cargar las reservas', 'error');
     }
 }
@@ -42,7 +112,7 @@ function mostrarReservas(lista) {
     if (lista.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="8">
+                <td colspan="9">
                     <div class="empty-state">
                         <div class="empty-state-icon">
                             <i class="fas fa-inbox"></i>
@@ -64,6 +134,7 @@ function mostrarReservas(lista) {
             <td>${reserva.hora}</td>
             <td><i class="fas fa-users" style="color: var(--color-primary); margin-right: 6px;"></i>${reserva.personas}</td>
             <td>${reserva.telefono}</td>
+            <td>${reserva.comentarios || 'Sin comentarios'}</td>
             <td><span class="status-badge status-${reserva.estado}">${reserva.estado}</span></td>
             <td>
                 <div class="action-buttons">
@@ -89,7 +160,13 @@ function aplicarFiltros() {
         const matchSearch = !search || 
             r.codigo.toLowerCase().includes(search) || 
             r.nombre.toLowerCase().includes(search);
-        const matchFecha = !fecha || r.fecha === fecha;
+        
+        let matchFecha = true;
+        if (fecha) {
+            const fechaReserva = new Date(r.fecha).toISOString().split('T')[0];
+            matchFecha = fechaReserva === fecha;
+        }
+        
         const matchEstado = !estado || r.estado === estado;
         
         return matchSearch && matchFecha && matchEstado;
@@ -140,9 +217,7 @@ async function guardarEdicion(e) {
     try {
         const response = await fetch(`${API_URL}/reservas/${codigo}/admin`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(datosActualizados)
         });
         
@@ -152,10 +227,10 @@ async function guardarEdicion(e) {
         
         await cargarReservasAdmin();
         cerrarModal('editModal');
-        mostrarMensajeAdmin('✅ Reserva actualizada correctamente', 'success');
+        mostrarMensajeAdmin('Reserva actualizada correctamente', 'success');
         
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         mostrarMensajeAdmin('Error al actualizar la reserva', 'error');
     }
 }
@@ -168,7 +243,8 @@ async function eliminarReservaAdmin(codigo) {
     
     try {
         const response = await fetch(`${API_URL}/reservas/${codigo}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         
         if (!response.ok) {
@@ -176,10 +252,10 @@ async function eliminarReservaAdmin(codigo) {
         }
         
         await cargarReservasAdmin();
-        mostrarMensajeAdmin('🗑️ Reserva eliminada correctamente', 'info');
+        mostrarMensajeAdmin('Reserva eliminada correctamente', 'info');
         
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         mostrarMensajeAdmin('Error al eliminar la reserva', 'error');
     }
 }
@@ -192,15 +268,18 @@ async function limpiarTodasReservas() {
     
     try {
         const promesas = reservasAdmin.map(r => 
-            fetch(`${API_URL}/reservas/${r.codigo}`, { method: 'DELETE' })
+            fetch(`${API_URL}/reservas/${r.codigo}`, { 
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            })
         );
         
         await Promise.all(promesas);
         await cargarReservasAdmin();
-        mostrarMensajeAdmin('🗑️ Todas las reservas fueron eliminadas', 'info');
+        mostrarMensajeAdmin('Todas las reservas fueron eliminadas', 'info');
         
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('Error:', error);
         mostrarMensajeAdmin('Error al limpiar las reservas', 'error');
     }
 }
@@ -266,7 +345,14 @@ function mostrarMensajeAdmin(texto, tipo = 'success') {
 }
 
 // Inicializar cuando cargue la página
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Verificar autenticación primero
+    const autenticado = await verificarAutenticacion();
+    
+    if (!autenticado) {
+        return; // Ya se redirigió a login
+    }
+    
     cargarReservasAdmin();
     
     // Event Listeners
