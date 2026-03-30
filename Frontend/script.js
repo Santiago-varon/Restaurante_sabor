@@ -1,5 +1,5 @@
 // configuracion de la API
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://restaurantesabor-production.up.railway.app/api';
 
 // generar codigo
 function generarCodigo() {
